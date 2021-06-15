@@ -151,8 +151,65 @@ function addDepartment() {
 }
 
 // function addEmployee()
+function addEmployee() {
+    connection.query("SELECT * FROM employees", function (err, response) {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: "first",
+                type: "input",
+                message: "Employee's first name?",
+            },
+            {
+                name: "last",
+                type: "input",
+                message: "Employee's last name?",
+            },
+            {
+                name: "managerID",
+                type: "input",
+                message: "Employee's manager's ID?",
+            },
+                // role?
+            ])
+            .then(function (answer) {
+                // role?
+            })
+        connection.query("INSERT INTO employee SET ?", {
+            first: answer.first,
+            last: answer.last,
+            managerID: answer.managerID,
+        },
+            function (err) {
+                if (err) throw err;
+                console.log("You have added an employee");
+                select();
+            }
+        )
+
+    })
+}
 
 // function addRole()
+function addRole() {
+    connection.query("SELECT * FROM role", function (err, response) {
+        if (err) throw err;
+        inquirer
+            .prompt([
+                {
+                    name: "newRole",
+                    type: "input",
+                    message: "What role would you like to add?",
+                },
+                {
+                    name: "salary",
+                    type: "input",
+                    message: "What salary is being paid?",
+                }
+            ])
+        // .then(function)
+    })
+}
 
 // function updateEmployeeRole()
 
