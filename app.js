@@ -213,7 +213,7 @@ function addRole() {
 
 // function updateEmployeeRole()
 
-// function deleteEmployee()
+// function deleteEmployee() using .destroy?
 
 // function exitApp()
 function exitApp() {
