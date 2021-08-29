@@ -2,8 +2,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const consoleTable = require("console.table");
-const { exit } = require("process");
-const { throwError } = require("rxjs");
+
 // establish connection
 const connection = mysql.createConnection({
     host: "localhost",
@@ -16,7 +15,7 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}`)
-    selection();
+    select();
 });
 
 // selection for users 
@@ -170,15 +169,26 @@ function addEmployee() {
                 type: "input",
                 message: "Employee's manager's ID?",
             },
-                // role?
+            {
+                name: "role_id",
+                type: "input",
+                message: "Employee's role ID?"
+            },
             ])
             .then(function (answer) {
-                // role?
+                let role_id;
+                for (let i = 0; i < response.length; i++) {
+                    if (response[i].title === answer.role) {
+                        role_id = response[i].id;
+                        console.log(role_id);
+                    }
+                }
             })
         connection.query("INSERT INTO employee SET ?", {
             first: answer.first,
             last: answer.last,
             managerID: answer.managerID,
+            role_id: role_id,
         },
             function (err) {
                 if (err) throw err;
@@ -205,15 +215,72 @@ function addRole() {
                     name: "salary",
                     type: "input",
                     message: "What salary is being paid?",
+                },
+                {
+                    name: "department",
+                    type: "list",
+                    choices: function () {
+
+                    }
                 }
             ])
-        // .then(function)
+            .then(function (answer) {
+                let department_id;
+                for (let i = 0; i < response.length; i++) {
+                    if (response[i].title === answer.department) {
+                        department_id = response[i].id;
+                        console.log(department_id);
+                    }
+                }
+            })
     })
 }
 
 // function updateEmployeeRole()
+function updateEmployeeRole() {
+    inquirer.prompt([{
+        name: "first_name",
+        tpye: "input",
+        message: "Employee's first name"
+    },
+    {
+        name: "last_name",
+        type: "input",
+        message: "Employee's last name?",
+    },
+    {
+        name: "role_id",
+        type: "input",
+        message: "Employee's new role ID",
+    }])
+        .then(function (answer) {
+            connection.query(
+                "Update employee set where?", {
+                role_id: answer.role_id,
+            },
+                {
+                    first_name: answer.first_name,
+                    last_name: answer.last_name,
+                }
+            )
+            select();
+        })
+}
 
 // function deleteEmployee() using .destroy?
+function deleteEmployee() {
+    inquirer.prompt({
+        name: "role_id",
+        type: "input",
+        message: "ID of employee to remove",
+    })
+        .then(function (answer) {
+            connection.query("Delete employee?", {
+                role_id: answer.role_id,
+            });
+            select();
+        })
+}
 
 // function exitApp()
 function exitApp() {
