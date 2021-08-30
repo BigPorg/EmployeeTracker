@@ -14,10 +14,8 @@ const connection = mysql.createConnection({
 // don't need to {else} if only one thing like this
 connection.connect(function (err) {
     if (err) throw err;
-    console.log(`connected as id ${connection.threadId}`)
     select();
 });
-
 // selection for users 
 function select() {
     inquirer
@@ -39,7 +37,7 @@ function select() {
             ],
         })
         // switch case for user answers
-        .then(function (userAnswer) {
+        .then((userAnswer) => {
             switch (userAnswer.selections) {
                 case "View Departments":
                     viewDepartments();
