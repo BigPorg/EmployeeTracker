@@ -1,5 +1,5 @@
 {
-  "name": "EmployeeTracker",
+  "name": "employee_tracker",
   "version": "1.0.0",
   "description": "Homework 12",
   "main": "index.js",
