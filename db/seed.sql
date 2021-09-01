@@ -9,7 +9,7 @@ VALUES
 ('Management'),
 ('Shop floor');
 
-INSERT INTO employee (first, last, role, managerID)
+INSERT INTO employee (first, last, role, role_id)
 VALUES
 ('Albert', 'Zed', 'Sales', 101),
 ('Bobby', 'Yarrow', 'R&D', 202),

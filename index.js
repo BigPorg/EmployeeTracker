@@ -1,7 +1,8 @@
 // establish consts
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const consoleTable = require("console.table");
+// const db = require("./db");
+require("console.table");
 
 // establish connection
 const connection = mysql.createConnection({
@@ -9,11 +10,16 @@ const connection = mysql.createConnection({
     port: 3306,
     user: "root",
     password: "Ewoksrule17!",
-    database: "employees_db"
+    database: "employees_db",
+    insecureAuth: true
 });
 // don't need to {else} if only one thing like this
 connection.connect(function (err) {
     if (err) throw err;
+    console.log(`
+    WELCOME TO THE EMPLOYEE MANAGER
+    -------------------------------
+    `);
     select();
 });
 // selection for users 
@@ -94,7 +100,7 @@ function select() {
 // }
 
 // function viewDepartments()
-function viewDepartments() {
+async function viewDepartments() {
     let query = "SELECT * FROM departments";
     connection.query(query, function (err, response) {
         if (err) throw err;
@@ -104,17 +110,15 @@ function viewDepartments() {
 }
 
 // function viewEmployees()
-function viewEmployees() {
-    let query = "SELECT * FROM employees";
-    connection.query(query, function (err, response) {
-        if (err) throw err;
-        console.table("All employees: ", response)
-        select();
-    });
+async function viewEmployees() {
+    const employees = await db.findAllEmployees();
+    console.table(employees);
+
+    select();
 }
 
 // function viewRoles()
-function viewRoles() {
+async function viewRoles() {
     let query = "SELECT * FROM roles";
     connection.query(query, function (err, response) {
         if (err) throw err;
@@ -124,7 +128,7 @@ function viewRoles() {
 }
 
 // function addDepartment()
-function addDepartment() {
+async function addDepartment() {
     inquirer
         .prompt([
             {
